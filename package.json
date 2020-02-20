@@ -1,0 +1,16 @@
+{
+  "name": "grid-layout",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "lerna run build",
+    "bootstrap": "lerna bootstrap",
+    "clean": "lerna clean",
+    "release": "lerna publish"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+  }
+}

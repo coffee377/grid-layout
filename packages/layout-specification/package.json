@@ -1,0 +1,26 @@
+{
+  "name": "layout-specification",
+  "version": "0.0.1",
+  "description": "",
+  "main": "esm/index.js",
+  "scripts": {
+    "build": "tsc --declaration"
+  },
+  "keywords": [],
+  "author": "coffee377",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coffee377/grid-layout.git"
+  },
+  "homepage": "",
+  "types": "esm/index.d.ts",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^16.9.21",
+    "csstype": "^2.6.9",
+    "typescript": "^3.7.4"
+  },
+  "dependencies": {
+    "react": "^16.12.0"
+  }
+}

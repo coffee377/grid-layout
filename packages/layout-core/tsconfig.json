@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "noUnusedLocals": false,
+  "compilerOptions": {
+    "outDir": "esm"
+  },
+  "include": [
+    "../layout-specification/src/**/*.ts",
+    "../layout-specification/src/**/*.tsx"
+  ],
+  "exclude": [
+    "../layout-specification/src/__tests__/*"
+  ]
+}
