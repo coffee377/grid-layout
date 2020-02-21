@@ -1,10 +1,11 @@
 {
-  "name": "@jingq/layout-core",
+  "name": "layout-core",
   "version": "0.0.1",
   "description": "",
-  "main": "esm/index.js",
   "scripts": {
-    "build": "tsc --declaration"
+    "build": "tsc --declaration",
+    "compile": "babel src -d lib --extensions .ts",
+    "test": "node tests/test.js"
   },
   "keywords": [],
   "author": "coffee377",
@@ -13,17 +14,20 @@
     "url": "https://github.com/coffee377/grid-layout.git"
   },
   "homepage": "",
-  "types": "esm/index.d.ts",
+  "types": "index.d.ts",
   "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "virtual-dom": "^2.1.1"
+  },
   "devDependencies": {
-    "@types/react": "^16.9.21",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-typescript": "^7.8.3",
+    "@types/lodash": "^4.14.149",
+    "@types/virtual-dom": "^2.1.0",
     "csstype": "^2.6.9",
     "typescript": "^3.7.4"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "dependencies": {
-    "react": "^16.12.0"
   }
 }

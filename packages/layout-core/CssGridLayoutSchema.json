@@ -9,9 +9,16 @@
       "type": "object"
     },
     "gridContainer": {
+      "additionalProperties": false,
       "description": "网格布局的区域（容器）",
       "type": "object",
       "properties": {
+        "name": {
+          "description": "容器名称(英文)",
+          "type": "string",
+          "pattern": "^\\w+$",
+          "default": "container"
+        },
         "display": {
           "description": "容器展示成块级元素或行内元素",
           "type": "string",
@@ -30,6 +37,20 @@
           "description": "定义每一列的列宽",
           "type": "string",
           "default": "1fr"
+        },
+        "width": {
+          "description": "容器宽度",
+          "type": [
+            "string",
+            "integer"
+          ]
+        },
+        "height": {
+          "description": "容器高度",
+          "type": [
+            "string",
+            "integer"
+          ]
         },
         "gridRowGap": {
           "description": "网格行与行的间隔（行间距）",
@@ -126,37 +147,72 @@
         "name": {
           "description": "网格项目名称",
           "type": "string",
-          "pattern": "\\w"
+          "pattern": "^\\w+$"
         },
         "rowStart": {
-          "description": "上边框所在的水平网格线",
+          "description": "网格项目上边框所在的水平网格线",
           "type": "integer",
           "multipleOf": 1,
-          "minimum": 1,
-          "default": 1
-        },
-        "rowSpan": {
-          "description": "项目合并单元格行数",
-          "type": "integer",
-          "multipleOf": 1,
-          "minimum": 1,
-          "default": 1
+          "minimum": 1
         },
         "columnStart": {
-          "description": "下边框所在的水平网格线",
+          "description": "网格项目下边框所在的水平网格线",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 1
+        },
+        "rowSpan": {
+          "description": "网格项目合并单元格行数",
           "type": "integer",
           "multipleOf": 1,
           "minimum": 1,
           "default": 1
         },
         "columnSpan": {
-          "description": "项目合并单元格列数",
+          "description": "网格项目合并单元格列数",
           "type": "integer",
           "multipleOf": 1,
           "minimum": 1,
           "default": 1
         },
-        "styles": {
+        "gridArea": {
+          "description": "网格项目所在区域",
+          "type": "string"
+        },
+        "zIndex": {
+          "description": "网格项目CSS层级",
+          "type": "integer",
+          "multipleOf": 1,
+          "default": 0
+        },
+        "justifySelf": {
+          "description": "设置网格单元格内容的水平位置",
+          "type": "string",
+          "enum": [
+            "start ",
+            "end ",
+            "center",
+            "stretch"
+          ],
+          "default": "stretch"
+        },
+        "alignSelf": {
+          "description": "设置单元格内容的垂直位置",
+          "type": "string",
+          "enum": [
+            "start ",
+            "end ",
+            "center",
+            "stretch"
+          ],
+          "default": "stretch"
+        },
+        "className": {
+          "description": "网格项外联样式名称",
+          "type": "string",
+          "pattern": "^\\w+$"
+        },
+        "style": {
           "description": "项目额外样式",
           "type": "object",
           "allOf": [
@@ -165,23 +221,50 @@
             }
           ]
         },
-        "x-component": {
-          "description": "项目使用的组件",
-          "type": "string"
-        },
-        "x-index": {
-          "description": "排序",
-          "type": "number",
-          "minimum": 0,
-          "default": 0
+        "component": {
+          "description": "项目内容或使用的组件",
+          "type": [
+            "string",
+            "object"
+          ],
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/componentDef"
+            }
+          ]
         }
       },
       "required": [
         "id",
+        "name",
         "rowStart",
-        "columnStart",
-        "rowSpan",
-        "columnSpan"
+        "columnStart"
+      ]
+    },
+    "componentDef": {
+      "additionalProperties": false,
+      "description": "组件配置",
+      "type": "object",
+      "properties": {
+        "lib": {
+          "description": "组件库名称",
+          "type": "string"
+        },
+        "name": {
+          "description": "组件名称",
+          "type": "string"
+        },
+        "props": {
+          "description": "组件属性",
+          "type": "object"
+        }
+      },
+      "required": [
+        "lib",
+        "name"
       ]
     }
   },
@@ -192,7 +275,8 @@
     },
     "name": {
       "description": "布局名称",
-      "type": "string"
+      "type": "string",
+      "pattern": "^\\w+$"
     },
     "container": {
       "description": "容器属性",
@@ -216,7 +300,7 @@
       },
       "minItems": 0
     },
-    "containerStyles": {
+    "containerStyle": {
       "description": "网格容器额外样式",
       "type": "object",
       "allOf": [
@@ -225,7 +309,7 @@
         }
       ]
     },
-    "itemStyles": {
+    "itemStyle": {
       "description": "网格项目公用样式",
       "type": "object",
       "allOf": [
@@ -240,6 +324,5 @@
     "name",
     "container",
     "item"
-  ],
-  "default": {}
+  ]
 }

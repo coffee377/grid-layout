@@ -2,6 +2,7 @@
   "id": "demo1",
   "name": "Preset1",
   "container": {
+    "name": "container",
     "display": "grid",
     "gridTemplateRows": "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
     "gridTemplateColumns": "3fr 4fr 3fr",
@@ -11,10 +12,16 @@
   "item": [
     {
       "id": "1-1-4-1",
+      "name": "d",
       "rowStart": 1,
       "columnStart": 1,
       "rowSpan": 4,
-      "columnSpan": 1
+      "columnSpan": 1,
+      "zIndex": 0,
+      "component": {
+        "lib": "d",
+        "name": ""
+      }
     },
     {
       "id": "5-1-4-1",
@@ -52,8 +59,8 @@
       "columnSpan": 1
     }
   ],
-  "containerStyles": {
+  "containerStyle": {
   },
-  "itemStyles": {
+  "itemStyle": {
   }
 }

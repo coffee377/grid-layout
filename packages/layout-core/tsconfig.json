@@ -5,10 +5,13 @@
     "outDir": "esm"
   },
   "include": [
-    "../layout-specification/src/**/*.ts",
-    "../layout-specification/src/**/*.tsx"
-  ],
-  "exclude": [
-    "../layout-specification/src/__tests__/*"
+    "src/**/*.ts"
   ]
+//  "exclude": [
+//    "../layout-specification/src/__tests__/*"
+//  ]
+//  "paths": {
+//    "css-grid-layout/specification": ["./index.d.ts"]
+//  },
+//  "typeRoots": ["@types", "./"]
 }
