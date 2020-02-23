@@ -1,14 +1,16 @@
 import VNode from 'virtual-dom/vnode/vnode';
 import VText from 'virtual-dom/vnode/vtext';
 import createElement from 'virtual-dom/create-element';
-// @ts-ignore
-import {GridData, CSSProperties, GridArea, Mount, Create, Style} from "css-grid-layout/specification"
-import {keys, merge, values, pick, omit} from 'lodash';
+import { CSSProperties, GridData, ItemData } from 'css-grid-layout';
+import { GridAreaFn, MountFn, CreateFn, StyleFn, CssFn } from 'css-grid-layout/specification';
+import { keys, merge, values, pick, omit } from 'lodash';
+import formatter from 'html-formatter';
+import minDocument from 'min-document';
 
 const CONTAINER = 'container';
 const ITEM = 'item';
-const SEPARATOR = ":";
-type GridType = 'container' | 'item'
+const SEPARATOR = ':';
+type GridType = 'container' | 'item';
 
 /**
  * 样式名称获取规则
@@ -20,44 +22,67 @@ const classNameRule = (className: string) => className.split(SEPARATOR)[1];
  * 获取样式类名
  * @param css
  */
-export const getClassName: (css: Record<string, CSSProperties>) => string = (css) => {
-  return keys(css).map(name => {
-    return classNameRule(name);
-  }).join(" ");
-};
+const getClassName: (css: Record<string, CSSProperties>) => string = css =>
+  keys(css)
+    .map(name => classNameRule(name))
+    .join(' ');
 
 /**
  * 合并输出样式
  * @param css
  */
-export const getStyles: (css: Record<string, CSSProperties>) => CSSProperties = (css) => {
-  return merge({}, ...values(css))
+const getStyles: (css: Record<string, CSSProperties>) => CSSProperties = css => {
+  const v = values<CSSProperties>(css);
+  return merge({} as CSSProperties, ...(v as CSSProperties));
 };
 
-export const style: Style = (gridData: GridData) => {
+const containerClassName = (data: GridData) => {
+  const { name, container } = data;
+  return container.name || name;
+};
+
+const itemClassName = (itemData: ItemData) => {
+  const { name, id } = itemData;
+  return name || id;
+};
+
+const calcGridArea: GridAreaFn = itemData => {
+  const { gridArea, rowStart, columnStart, rowSpan = 1, columnSpan = 1 } = itemData;
+  if (gridArea) {
+    return gridArea;
+  }
+  return `${rowStart} / ${columnStart} / span ${rowSpan} / span ${columnSpan}`;
+};
+
+const style: StyleFn = (gridData: GridData) => {
   const result: Record<string, CSSProperties> = {};
   // 容器样式
-  const {name, container, containerStyle, item, itemStyle} = gridData;
-  result[`${CONTAINER}${SEPARATOR}${container.name || name}`] = {...omit(container, ['name']), ...containerStyle};
+  const { container, containerStyle, item, itemStyle } = gridData;
+  const containerStyleName = containerClassName(gridData);
+  result[`${CONTAINER}${SEPARATOR}${containerStyleName}`] = {
+    ...(omit(container, ['name']) as CSSProperties),
+    ...containerStyle,
+  };
   // 项目公用样式
-  result[`${ITEM}${SEPARATOR}${ITEM}`] = {...itemStyle};
+  result[`${ITEM}${SEPARATOR}${ITEM}`] = { ...itemStyle };
   // 项目样式
   item.forEach(value => {
-    const {id, name, zIndex, justifySelf, alignSelf, style} = value;
+    const { zIndex, justifySelf, alignSelf, style } = value;
     const gridArea = calcGridArea(value);
-    let css: CSSProperties = {gridArea};
+    const css: CSSProperties = { gridArea };
     if (zIndex) {
-      css["zIndex"] = zIndex
+      css['zIndex'] = zIndex;
     }
     if (justifySelf) {
-      css["justifySelf"] = justifySelf
+      css['justifySelf'] = justifySelf;
     }
     if (alignSelf) {
-      css["alignSelf"] = alignSelf
+      css['alignSelf'] = alignSelf;
     }
-    result[`${ITEM}${SEPARATOR}${name || id}`] = {...css, ...style};
+    const itemStyleName = itemClassName(value);
+    result[`${ITEM}${SEPARATOR}${itemStyleName}`] = { ...css, ...style };
   });
-  return result
+  return result;
 };
 
 /**
@@ -68,60 +93,78 @@ export const style: Style = (gridData: GridData) => {
  * @param children
  * @param inline
  */
-const createNode = (css: Record<string, CSSProperties>, gridType: GridType, classNames: string[], children: any[] = [], inline?: boolean) => {
+const createNode = (
+  css: Record<string, CSSProperties>,
+  gridType: GridType,
+  classNames: string[],
+  children: any[] = [],
+  inline?: boolean,
+) => {
   const props: any = {};
   const names = classNames.map(value => {
     if (!value.includes(SEPARATOR)) {
-      return `${gridType}${SEPARATOR}${value}`
+      return `${gridType}${SEPARATOR}${value}`;
     }
-    return value
+    return value;
   });
-  const styles = pick(names);
+  const styles: Record<string, CSSProperties> = pick(css, names);
   if (inline) {
     props.style = getStyles(styles);
   } else {
     props.className = getClassName(styles);
   }
-  return new VNode('div', props, children)
+  return new VNode('div', props, children);
 };
 
-const createItems = (data: GridData, inline?: boolean) => {
+const createItems = (data: GridData, css: Record<string, CSSProperties>, inline?: boolean) => {
   const itemData = data.item || [];
-  const {itemStyle} = data;
   return itemData.map(item => {
-    const {component} = item;
-    // const className = `item ${name}`;
+    const { component, className } = item;
+
+    const classNames: string[] = ['item', itemClassName(item)];
+    if (className) {
+      classNames.push(className);
+    }
+
     let children = [];
     if (component && typeof component === 'string') {
-      children = [new VText(String(children))]
+      children = [new VText(String(component))];
     }
-    return createNode({...itemStyle}, 'item', ['item', item.name || item.id], children, inline)
-  })
+    return createNode(css, 'item', classNames, children, inline);
+  });
 };
 
 const render = (data: GridData, inline?: boolean) => {
-  const children = createItems(data, inline);
-  const css = {};
-  return createNode(css, 'container', [''], children, inline)
+  const css = style(data);
+  const className = containerClassName(data);
+  const children = createItems(data, css, inline);
+  return createNode(css, 'container', [className], children, inline);
 };
 
-export const calcGridArea: GridArea = (itemData) => {
-  const {gridArea, rowStart, columnStart, rowSpan = 1, columnSpan = 1} = itemData;
-  if (gridArea) {
-    return gridArea;
+const mount: MountFn = (gridData, inline = false, mountElement) => {
+  const nodeTree = render(gridData, inline);
+  const isDocument = mountElement && mountElement instanceof Document;
+  const isElement = mountElement && mountElement instanceof Element;
+  const doc: Document = isDocument ? (mountElement as Document) : minDocument;
+  const e: Element = createElement(nodeTree, { document: doc, warn: true });
+  if (isElement) {
+    // eslint-disable-next-line no-param-reassign
+     (mountElement as Element).innerHTML = e.toString();
+}
+  if (isDocument) {
+    (mountElement as Document).body.appendChild(e);
   }
-  return `${rowStart} / ${columnStart} / span ${rowSpan} / span ${columnSpan}`;
+  return e;
 };
 
-export const mount: Mount = (gridData, inline = false, document) => {
-  const nodeTree = render(gridData);
-  return createElement(nodeTree, {document})
-};
-
-export const create: Create = (gridData, inline = false, format = false) => {
+const create: CreateFn = (gridData, inline = false, format = false) => {
   const result = mount(gridData, inline).toString();
   if (format) {
-    // 格式代码返回
+    return formatter.render(result);
   }
   return result;
 };
+
+const css: CssFn = styles => '';
+
+export { calcGridArea, style, mount, create, css };

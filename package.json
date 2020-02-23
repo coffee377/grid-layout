@@ -12,5 +12,8 @@
     "packages/*"
   ],
   "devDependencies": {
+    "@umijs/fabric": "^2.0.3",
+    "eslint-import-resolver-webpack": "^0.12.1",
+    "prettier": "^1.19.1"
   }
 }
