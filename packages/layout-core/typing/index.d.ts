@@ -1,4 +1,3 @@
-
 declare namespace CssGridLayout {
   import * as CSS from 'csstype';
 
@@ -253,12 +252,11 @@ declare module 'css-grid-layout/specification' {
   export import ComponentData = CssGridLayout.ComponentData;
   export import ItemData = CssGridLayout.ItemData;
   export import GridData = CssGridLayout.GridData;
-
   export type GridAreaFn = (itemData: ItemData) => string;
   export type MountFn = (gridData: GridData, inline?: boolean, mountElement?: HTMLElement | Document) => Element;
   export type CreateFn = (gridData: GridData, inline?: boolean, format?: boolean) => string;
   export type StyleFn = (gridData: GridData) => Record<string, CSSProperties>;
-  export type CssFn = (css: Record<string, CSSProperties>) => string;
+  export type CssFn = (css: Record<string, CSSProperties>, format?: boolean, opts?:any ) => string;
 }
 
 // declare module 'css-grid-layout/core' {

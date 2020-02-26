@@ -4,7 +4,7 @@ const path = require('path');
 const { resolve } = path;
 const config = new Config();
 
-config.mode("development");
+config.mode("production" );
 
 // 入口配置
 config
@@ -88,5 +88,12 @@ config.resolve.extensions
   .end();
 // .alias.set('.', resolve(__dirname, 'src'))
 // .end();
+
+config.externals({
+  commonjs: 'lodash',
+  commonjs2: 'lodash',
+  amd: 'lodash',
+  root: '_',
+});
 
 module.exports = config.toConfig();

@@ -1,0 +1,13 @@
+{
+  "name": "layout-react",
+  "version": "0.0.1",
+  "description": "React Implements the Css Grid Layout",
+  "main": "index.js",
+  "scripts": {
+  },
+  "author": {
+    "name": "coffee377",
+    "email": "coffee377@dingtalk.com"
+  },
+  "license": "ISC"
+}

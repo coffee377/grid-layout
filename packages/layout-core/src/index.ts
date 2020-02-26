@@ -6,17 +6,8 @@ import { GridAreaFn, MountFn, CreateFn, StyleFn, CssFn } from 'css-grid-layout/s
 import { keys, merge, values, pick, omit } from 'lodash';
 import formatter from 'html-formatter';
 import minDocument from 'min-document';
-
-const CONTAINER = 'container';
-const ITEM = 'item';
-const SEPARATOR = ':';
-type GridType = 'container' | 'item';
-
-/**
- * 样式名称获取规则
- * @param className
- */
-const classNameRule = (className: string) => className.split(SEPARATOR)[1];
+import { classNameRule, CONTAINER, GridType, ITEM, SEPARATOR } from './helper';
+import { cssCode } from './css';
 
 /**
  * 获取样式类名
@@ -149,8 +140,8 @@ const mount: MountFn = (gridData, inline = false, mountElement) => {
   const e: Element = createElement(nodeTree, { document: doc, warn: true });
   if (isElement) {
     // eslint-disable-next-line no-param-reassign
-     (mountElement as Element).innerHTML = e.toString();
-}
+    (mountElement as Element).innerHTML = e.toString();
+  }
   if (isDocument) {
     (mountElement as Document).body.appendChild(e);
   }
@@ -165,6 +156,6 @@ const create: CreateFn = (gridData, inline = false, format = false) => {
   return result;
 };
 
-const css: CssFn = styles => '';
+const css: CssFn = cssCode;
 
 export { calcGridArea, style, mount, create, css };

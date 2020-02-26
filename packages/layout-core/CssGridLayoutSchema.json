@@ -16,7 +16,7 @@
         "name": {
           "description": "容器名称(英文)",
           "type": "string",
-          "pattern": "^\\w+$",
+          "pattern": "^[a-zA-Z]+([a-zA-Z\\d]|[_])*$",
           "default": "container"
         },
         "display": {
@@ -147,7 +147,7 @@
         "name": {
           "description": "网格项目名称",
           "type": "string",
-          "pattern": "^\\w+$"
+          "pattern": "^[a-zA-Z]+([a-zA-Z\\d]|[_])*$"
         },
         "rowStart": {
           "description": "网格项目上边框所在的水平网格线",
