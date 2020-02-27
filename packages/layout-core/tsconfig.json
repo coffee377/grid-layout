@@ -1,18 +1,17 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "outDir": "esm",
-    "isolatedModules": true,
-    "noUnusedLocals": false,
-    "declaration": true,
-    "declarationDir": "types"
+//    "allowSyntheticDefaultImports": true,
+//    "outDir": "esm",
+//    "isolatedModules": true,
+//    "noUnusedLocals": false,
+//    "declaration": true,
+//    "declarationDir": "types"
   },
-  "include": [
-    "src/**/*.ts",
-    "typing/**/*.d.ts"
-  ],
+  "include": ["src/**/*.ts", "types/**/*.d.ts"],
+  "baseUrl": ".",
   "paths": {
+//    "lodash": "../../node_modules/@types/lodash"
   },
-  "typeRoots": ["@types", "."]
+  "typeRoots": ["@types", "./types"]
 }

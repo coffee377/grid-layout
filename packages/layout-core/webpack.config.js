@@ -4,7 +4,7 @@ const path = require('path');
 const { resolve } = path;
 const config = new Config();
 
-config.mode("production" );
+config.mode('production');
 
 // 入口配置
 config
@@ -72,7 +72,7 @@ config.module
       // ['@babel/preset-react',{}],
       ['@babel/preset-typescript', {}],
     ],
-    // plugins: [['@babel/plugin-proposal-class-properties', {}]],
+    plugins: [['@babel/plugin-proposal-class-properties', {}]],
   });
 
 // 也可以创建一个具名的插件!
@@ -80,8 +80,9 @@ config.module
 //   .plugin('clean')
 //   .use(CleanPlugin, [['dist'], { root: '/dir' }]);
 
-config.resolve.extensions
-  .add('.tsx')
+config.resolve.mainFields
+  .end()
+  .extensions.add('.tsx')
   .add('.ts')
   .add('.jsx')
   .add('.js')

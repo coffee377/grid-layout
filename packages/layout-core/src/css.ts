@@ -10,10 +10,10 @@ import {
   IdSelector,
   generate,
 } from 'css-tree';
-import { CSSProperties } from 'css-grid-layout';
-import { CssFn } from 'css-grid-layout/specification';
+import { CSSProperties } from 'layout-data';
+import { CssFn } from 'layout-core/css';
 import beautify from 'cssbeautify';
-import { classNameRule } from './helper';
+import { ClassNameRule } from './classNameRule';
 
 const classSelector = (name: string) => ({ type: 'ClassSelector', name } as ClassSelector);
 
@@ -36,7 +36,7 @@ const block = (css: CSSProperties) => {
 
 const rule: (name: string, css: CSSProperties) => Rule = (name, css) => {
   const selectors: Selector[] = [];
-  const cs: ClassSelector = classSelector(name);
+  const cs: ClassSelector = classSelector(ClassNameRule.phrase(name).name);
   const selector: Selector = { type: 'Selector', children: [cs] } as Selector;
   selectors.push(selector);
   return { type: 'Rule', prelude: selectorList(selectors), block: block(css) };
@@ -45,16 +45,19 @@ const rule: (name: string, css: CSSProperties) => Rule = (name, css) => {
 const ast: (style: Record<string, CSSProperties>) => StyleSheet = style => {
   const children = [];
   forIn(style, (v, k) => {
-    children.push(rule(classNameRule(k), v));
+    children.push(rule(k, v));
   });
   return { type: 'StyleSheet', children } as StyleSheet;
 };
 
-export const cssCode: CssFn = (css, format, opts) => {
+const cssCodeText: CssFn = (css, format, opts) => {
   const result = generate(ast(css), { sourceMap: false });
-  const opt = { indent: '  ', openbrace: 'end-of-line', autosemicolon: true, ...opts };
+  const { indent = '  ', openBrace = 'end-of-line', autoSemicolon = true } = opts || {};
+  const opt = { indent, openbrace: openBrace, autosemicolon: autoSemicolon, ...opts };
   if (format) {
-    return beautify(result, opt);
+    return beautify(result, opt as any);
   }
   return result;
 };
+
+export { cssCodeText };

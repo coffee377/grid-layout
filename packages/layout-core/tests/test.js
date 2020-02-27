@@ -6,6 +6,7 @@ const data = {
   id: 'demo1',
   name: 'demo1',
   container: {
+    name: 'test',
     display: 'grid',
     gridTemplateColumns: '3fr 4fr 3fr',
     gridTemplateRows: 'repeat(8,55px)',
@@ -20,7 +21,8 @@ const data = {
   item: [
     {
       id: '1-1-4-1',
-      "name": "item1",
+      name: "item1a",
+      className: 'coffee',
       columnStart: 1,
       rowStart: 1,
       rowSpan: 4,
@@ -75,28 +77,11 @@ const data = {
 };
 
 
-const styles = core.style(data);
+const styles = core.calcStyle(data);
 console.log(styles);
-// console.log(core.getClassName(styles));
-// console.log(core.getStyles(styles));
-// console.log(core.mount(data));
-const str = core.create(data, false, true);
-const css = core.css(styles,true);
+const str = core.domCodeText(data, false, true);
+const css = core.cssCodeText(styles,true);
 console.log(str);
 console.log(css);
-// // console.log(str.substring(0,180));
-// const fs = require("fs");
-//
-// // 1.打开文件, 没有就创建, 以什么样的形式来打开文件 w:写 r:读
-// let fd = fs.openSync('1.txt', 'w');
-//
-// // 2.写入文件,如果要写入文件必须要用 w 方式打开
-// const formatter = require('html-formatter');
-// const result = formatter.render(str);
-// console.log(result);
-// fs.writeFileSync(fd, result);
-//
-// // 3.关闭文件资源
-// fs.closeSync(fd);
 
 console.log('===================== TEST =====================');

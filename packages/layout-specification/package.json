@@ -1,15 +1,13 @@
 {
   "name": "layout-specification",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Type definitions for css grid layout.",
   "types": "index",
-  "scripts": {
-    "build": "father-build",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "files": ["types", "index.d.ts"],
+  "scripts": {},
   "author": "",
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "csstype": "^2.6.9"
   }
 }

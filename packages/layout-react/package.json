@@ -2,12 +2,19 @@
   "name": "layout-react",
   "version": "0.0.1",
   "description": "React Implements the Css Grid Layout",
-  "main": "index.js",
-  "scripts": {
-  },
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "scripts": {},
   "author": {
     "name": "coffee377",
     "email": "coffee377@dingtalk.com"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "layout-specification": "^0.1.0",
+    "react": "^16.12.0"
+  },
+  "devDependencies": {
+    "layout-specification": "^0.1.0"
+  }
 }

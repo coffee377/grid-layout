@@ -2,18 +2,20 @@
   "name": "css-grid-layout",
   "version": "0.0.1",
   "description": "",
+  "browser": "dist/index.js",
   "main": "lib/index.js",
   "module": "esm/index.js",
-  "types": "typing/index.d.ts",
+  "types": "types/index.d.ts",
   "files": [
-    "esm",
     "dist",
-    "typing",
+    "esm",
+    "lib",
+    "types",
     "CssGridLayoutSchema.json"
   ],
   "scripts": {
     "build": "webpack",
-    "compile": "babel src -d lib --extensions .ts",
+    "compile": "babel src -d esm --extensions .ts",
     "test": "node tests/test.js"
   },
   "keywords": [],
@@ -28,6 +30,7 @@
     "css-tree": "^1.0.0-alpha.39",
     "cssbeautify": "^0.3.1",
     "html-formatter": "^0.1.9",
+    "layout-specification": "^0.1.0",
     "lodash": "^4.17.15",
     "virtual-dom": "^2.1.1"
   },
@@ -35,8 +38,7 @@
     "@types/css-tree": "^1.0.3",
     "@types/cssbeautify": "^0.3.1",
     "@types/lodash": "^4.14.149",
-    "@types/react-dom": "^16.9.5",
     "@types/virtual-dom": "^2.1.0",
-    "csstype": "^2.6.9"
+    "layout-specification": "^0.1.0"
   }
 }
