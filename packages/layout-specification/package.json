@@ -1,8 +1,8 @@
 {
-  "name": "layout-specification",
+  "name": "grid-layout-specification",
   "version": "0.1.0",
   "description": "Type definitions for css grid layout.",
-  "types": "index",
+  "types": "index.d.ts",
   "files": ["types", "index.d.ts"],
   "scripts": {},
   "author": "",

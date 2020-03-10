@@ -1,5 +1,5 @@
 {
-  "name": "css-grid-layout",
+  "name": "grid-layout-core",
   "version": "0.0.1",
   "description": "",
   "browser": "dist/index.js",
@@ -30,7 +30,7 @@
     "css-tree": "^1.0.0-alpha.39",
     "cssbeautify": "^0.3.1",
     "html-formatter": "^0.1.9",
-    "layout-specification": "^0.1.0",
+    "grid-layout-specification": "^0.1.0",
     "lodash": "^4.17.15",
     "virtual-dom": "^2.1.1"
   },
@@ -39,6 +39,6 @@
     "@types/cssbeautify": "^0.3.1",
     "@types/lodash": "^4.14.149",
     "@types/virtual-dom": "^2.1.0",
-    "layout-specification": "^0.1.0"
+    "grid-layout-specification": "^0.1.0"
   }
 }
