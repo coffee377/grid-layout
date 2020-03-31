@@ -1,0 +1,252 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "网格布局配置校验规则",
+  "type": "object",
+  "additionalProperties": false,
+  "definitions": {
+    "styles": {
+      "description": "css 样式属性",
+      "type": "object"
+    },
+    "gridContainer": {
+      "additionalProperties": false,
+      "description": "网格布局的区域（容器）",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "容器名称(英文)",
+          "type": "string",
+          "pattern": "^[a-zA-Z]+([a-zA-Z\\d]|[_])*$",
+          "default": "container"
+        },
+        "display": {
+          "description": "容器展示成块级元素或行内元素",
+          "type": "string",
+          "enum": ["grid", "inline-grid"],
+          "default": "grid"
+        },
+        "gridTemplateRows": {
+          "description": "定义每一行的行高",
+          "type": "string",
+          "default": "1fr"
+        },
+        "gridTemplateColumns": {
+          "description": "定义每一列的列宽",
+          "type": "string",
+          "default": "1fr"
+        },
+        "width": {
+          "description": "容器宽度",
+          "type": ["string", "integer"]
+        },
+        "height": {
+          "description": "容器高度",
+          "type": ["string", "integer"]
+        },
+        "gridRowGap": {
+          "description": "网格行与行的间隔（行间距）",
+          "type": ["string", "number"],
+          "default": 0
+        },
+        "gridColumnGap": {
+          "description": "网格列与列的间隔（列间距）",
+          "type": ["string", "number"],
+          "default": 0
+        },
+        "gridAutoFlow": {
+          "description": "容器的子元素顺序方式",
+          "type": "string",
+          "enum": ["row", "column", "row dense", "column dense"],
+          "default": "row dense"
+        },
+        "justifyContent": {
+          "description": "整个内容区域在容器里面的水平位置",
+          "type": "string",
+          "enum": ["start", "end", "center", "stretch", "space-around", "space-between", "space-evenly"],
+          "default": "stretch"
+        },
+        "alignContent": {
+          "description": "整个内容区域在容器里面的垂直位置",
+          "type": "string",
+          "enum": ["start", "end", "center", "stretch", "space-around", "space-between", "space-evenly"],
+          "default": "stretch"
+        },
+        "justifyItems": {
+          "description": "设置单元格内容的水平位置",
+          "type": "string",
+          "enum": ["start ", "end ", "center", "stretch"],
+          "default": "stretch"
+        },
+        "alignItems": {
+          "description": "设置单元格内容的垂直位置",
+          "type": "string",
+          "enum": ["start ", "end ", "center", "stretch"],
+          "default": "stretch"
+        }
+      },
+      "required": ["display", "gridTemplateRows", "gridTemplateColumns"]
+    },
+    "gridItems": {
+      "description": "网格项目属性",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "网格项目ID",
+          "type": "string"
+        },
+        "name": {
+          "description": "网格项目名称",
+          "type": "string",
+          "pattern": "^[a-zA-Z]+([a-zA-Z\\d]|[_])*$"
+        },
+        "rowStart": {
+          "description": "网格项目上边框所在的水平网格线",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 1
+        },
+        "columnStart": {
+          "description": "网格项目下边框所在的水平网格线",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 1
+        },
+        "rowSpan": {
+          "description": "网格项目合并单元格行数",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 1,
+          "default": 1
+        },
+        "columnSpan": {
+          "description": "网格项目合并单元格列数",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 1,
+          "default": 1
+        },
+        "gridArea": {
+          "description": "网格项目所在区域",
+          "type": "string"
+        },
+        "zIndex": {
+          "description": "网格项目CSS层级",
+          "type": "integer",
+          "multipleOf": 1,
+          "default": 0
+        },
+        "justifySelf": {
+          "description": "设置网格单元格内容的水平位置",
+          "type": "string",
+          "enum": ["start ", "end ", "center", "stretch"],
+          "default": "stretch"
+        },
+        "alignSelf": {
+          "description": "设置单元格内容的垂直位置",
+          "type": "string",
+          "enum": ["start ", "end ", "center", "stretch"],
+          "default": "stretch"
+        },
+        "className": {
+          "description": "网格项外联样式名称",
+          "type": "string",
+          "pattern": "^\\w+$"
+        },
+        "style": {
+          "description": "项目额外样式",
+          "type": "object",
+          "allOf": [
+            {
+              "$ref": "#/definitions/styles"
+            }
+          ]
+        },
+        "component": {
+          "description": "项目内容或使用的组件",
+          "type": ["string", "object"],
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/componentDef"
+            }
+          ]
+        }
+      },
+      "required": ["id", "name", "rowStart", "columnStart"]
+    },
+    "componentDef": {
+      "additionalProperties": false,
+      "description": "组件配置",
+      "type": "object",
+      "properties": {
+        "lib": {
+          "description": "组件库名称",
+          "type": "string"
+        },
+        "name": {
+          "description": "组件名称",
+          "type": "string"
+        },
+        "props": {
+          "description": "组件属性",
+          "type": "object"
+        }
+      },
+      "required": ["lib", "name"]
+    }
+  },
+  "properties": {
+    "id": {
+      "description": "布局ID",
+      "type": "string"
+    },
+    "name": {
+      "description": "布局名称",
+      "type": "string",
+      "pattern": "^\\w+$"
+    },
+    "container": {
+      "description": "容器属性",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/gridContainer"
+        }
+      ]
+    },
+    "item": {
+      "description": "网格布局项目",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/definitions/gridItems"
+          }
+        ]
+      },
+      "minItems": 0
+    },
+    "containerStyle": {
+      "description": "网格容器额外样式",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/styles"
+        }
+      ]
+    },
+    "itemStyle": {
+      "description": "网格项目公用样式",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/styles"
+        }
+      ]
+    }
+  },
+  "required": ["id", "name", "container", "item"]
+}

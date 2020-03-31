@@ -1,0 +1,28 @@
+{
+  "name": "grid-layout-react",
+  "version": "0.0.1",
+  "description": "React Implements the Css Grid Layout",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "types": "types/index.d.ts",
+  "scripts": {
+    "prebuild": "rimraf dist esm lib types index.d.ts",
+    "build": "yarn prebuild && node scripts/build.js"
+  },
+  "files": ["esm", "lib", "types", "index.d.ts", "README.md"],
+  "author": {
+    "name": "coffee377",
+    "email": "coffee377@dingtalk.com"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "grid-layout-core": "^0.0.1",
+    "react": "^16.12.0"
+  },
+  "devDependencies": {
+    "@types/classnames": "^2.2.9",
+    "@types/react": "^16.9.23",
+    "dts-helper": "^1.1.2"
+  }
+}

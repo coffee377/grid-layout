@@ -1,0 +1,37 @@
+{
+  "name": "grid-layout-core",
+  "version": "0.0.1",
+  "description": "",
+  "browser": "dist/layout-core.js",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "types": "index.d.ts",
+  "files": ["dist", "esm", "lib", "index.d.ts", "CssGridLayoutSchema.json", "README.md"],
+  "scripts": {
+    "prebuild": "rimraf dist esm lib index.d.ts",
+    "build": "yarn prebuild && node scripts/build.js",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "coffee377",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coffee377/grid-layout.git"
+  },
+  "homepage": "",
+  "license": "ISC",
+  "dependencies": {
+    "css-tree": "^1.0.0-alpha.39",
+    "cssbeautify": "^0.3.1",
+    "html-formatter": "^0.1.9",
+    "lodash": "^4.17.15",
+    "virtual-dom": "^2.1.1"
+  },
+  "devDependencies": {
+    "@types/css-tree": "^1.0.3",
+    "@types/cssbeautify": "^0.3.1",
+    "@types/lodash": "^4.14.149",
+    "@types/virtual-dom": "^2.1.0",
+    "dts-helper": "^1.1.2"
+  }
+}
