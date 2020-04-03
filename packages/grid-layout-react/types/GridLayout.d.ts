@@ -1,5 +1,5 @@
 import React from 'react';
-import { GridData } from "grid-layout-core/data";
+import { GridData } from 'grid-layout-core/data';
 /**
  * 包裹组件，仅用于传递数据
  */

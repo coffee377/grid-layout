@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react';
-import { ContainerData, WithFalse } from "grid-layout-core/data";
+import { ContainerData, WithFalse } from 'grid-layout-core/data';
 export interface ContainerStyle extends CSSProperties {
 }
 export interface ContainerProps extends Partial<ContainerData> {

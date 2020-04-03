@@ -50,7 +50,7 @@ compiler.run((err, stats) => {
 });
 
 // 4. dts
-dts.emit({ outDir: 'types', outFile: true, modulePrefix: true }).catch(err => {
+dts.emit({ outDir: 'types', outFile: false, modulePrefix: true }).catch(err => {
   if (err) {
     console.log(err);
   }

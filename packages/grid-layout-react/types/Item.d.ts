@@ -1,5 +1,5 @@
 import React from 'react';
-import { ItemData, WithFalse, CSSProperties } from "grid-layout-core/data";
+import { ItemData, WithFalse, CSSProperties } from 'grid-layout-core';
 export interface ItemStyle extends CSSProperties {
 }
 export interface ItemProps extends Partial<ItemData> {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentData } from "grid-layout-core/data";
+import { ComponentData } from 'grid-layout-core/data';
 export interface DynamicProps extends Partial<ComponentData> {
     component?: string;
     props?: any;

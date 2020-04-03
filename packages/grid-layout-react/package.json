@@ -7,7 +7,8 @@
   "types": "types/index.d.ts",
   "scripts": {
     "prebuild": "rimraf dist esm lib types index.d.ts",
-    "build": "yarn prebuild && node scripts/build.js"
+    "build": "yarn prebuild && node scripts/build.js",
+    "prepublish": "yarn build"
   },
   "files": ["esm", "lib", "types", "index.d.ts", "README.md"],
   "author": {
@@ -23,6 +24,6 @@
   "devDependencies": {
     "@types/classnames": "^2.2.9",
     "@types/react": "^16.9.23",
-    "dts-helper": "^1.1.2"
+    "dts-helper": "^1.1.3"
   }
 }

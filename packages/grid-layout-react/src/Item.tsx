@@ -1,8 +1,7 @@
 import React from 'react';
 import { omit } from 'lodash';
 import classNames from 'classnames';
-import { ItemData, WithFalse, CSSProperties } from 'grid-layout-core/data';
-import { calcGridArea } from 'grid-layout-core/helper';
+import { ItemData, WithFalse, CSSProperties, calcGridArea } from 'grid-layout-core';
 import { mixinEnhance } from './utils';
 import Dynamic from './Dynamic';
 

@@ -2,6 +2,7 @@ import { omit } from 'lodash';
 import { CSSProperties, GridData, ItemData } from '../data';
 import { ITEM } from './const';
 import { ClassNameRule } from '../rule';
+import { containerClassName, itemClassName } from './class-name';
 
 /**
  * @description 计算网格项目所在区域
@@ -21,16 +22,6 @@ const calcGridArea: GridAreaFn = itemData => {
     return gridArea;
   }
   return `${rowStart} / ${columnStart} / span ${rowSpan} / span ${columnSpan}`;
-};
-
-const containerClassName = (data: GridData) => {
-  const { name, container } = data;
-  return container.name || name;
-};
-
-const itemClassName = (itemData: ItemData) => {
-  const { name, id } = itemData;
-  return name || id;
 };
 
 const calcStyle: StyleFn = gridData => {
@@ -65,4 +56,4 @@ const calcStyle: StyleFn = gridData => {
   return result;
 };
 
-export { calcGridArea, calcStyle, containerClassName, itemClassName };
+export { calcGridArea, calcStyle };

@@ -5,10 +5,11 @@ const babelCli = require('../../../node_modules/@babel/cli/lib/babel/dir');
 // 1. esm
 babelCli
   .default({
-    cliOptions: { filenames: ['src'], outDir: 'esm', extensions: '.ts,.tsx' },
+    cliOptions: { filenames: ['src'], outDir: 'esm', extensions: '.ts,.tsx', watch: false },
     babelOptions: {
       presets: [
         ['@babel/preset-env', { useBuiltIns: 'usage', corejs: 3, modules: false, targets: { node: true } }],
+        ['@babel/preset-react', {}],
         ['@babel/preset-typescript', {}],
       ],
       plugins: [['@babel/plugin-proposal-class-properties', {}]],
@@ -26,6 +27,7 @@ babelCli
     babelOptions: {
       presets: [
         ['@babel/preset-env', { useBuiltIns: 'usage', corejs: 3, modules: 'commonjs', targets: { node: true } }],
+        ['@babel/preset-react', {}],
         ['@babel/preset-typescript', {}],
       ],
       plugins: [
