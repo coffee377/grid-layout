@@ -8,9 +8,9 @@
     //    "declaration": true,
     //    "declarationDir": "types"
     //    "typeRoots": ["@types", "./types"],
-    "paths": {
-      "@@/*": ["src/.umi/*"]
-    }
+//    "paths": {
+      //      "@@/*": ["src/.umi/*"]
+//    }
   },
   "include": ["src/**/*.ts", "types/**/*.d.ts"]
 }

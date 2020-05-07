@@ -1,16 +1,11 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    //    "allowSyntheticDefaultImports": true,
-    //    "outDir": "esm",
     "esModuleInterop": true,
     "jsx": "react",
-    //    "isolatedModules": true,
-    //    "noUnusedLocals": false,
-    //    "declaration": true,
-    //    "declarationDir": "types"
-    //    "typeRoots": ["@types", "./types"],
-    "paths": {}
+    "typeRoots": ["types", "node_modules/@types", "../../node_modules/@types"],
+    "paths": {
+    }
   },
   "include": ["src/**/*.ts", "types/**/*.d.ts"]
 }

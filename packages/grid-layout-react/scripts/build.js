@@ -1,57 +1,42 @@
 #! /usr/bin/env node
 const dts = require('dts-helper');
-const babelCli = require('../../../node_modules/@babel/cli/lib/babel/dir');
+const { Babel } = require('build-toolkit');
+
+const compilerOptions = { isTS: true, isReact: true };
 
 // 1. esm
-babelCli
-  .default({
-    cliOptions: { filenames: ['src'], outDir: 'esm', extensions: '.ts,.tsx', watch: false },
-    babelOptions: {
-      presets: [
-        ['@babel/preset-env', { useBuiltIns: 'usage', corejs: 3, modules: false, targets: { node: true } }],
-        ['@babel/preset-react', {}],
-        ['@babel/preset-typescript', {}],
-      ],
-      plugins: [['@babel/plugin-proposal-class-properties', {}]],
-    },
-  })
-  .catch(e => {
-    console.log(e);
-    process.exit(1);
-  });
+const esm = new Babel({ ...compilerOptions, dest: 'esm' });
+esm.hook.options.tap('esm', opts => {
+  opts
+    .preset('env')
+    .tap(options => ({ ...options, modules: false }))
+    .end();
+  opts.comments(false).end();
+});
+
+esm.run().catch(err => {
+  console.log(err);
+  process.exit(1);
+});
 
 // 2. cjs
-babelCli
-  .default({
-    cliOptions: { filenames: ['src'], outDir: 'lib', extensions: '.ts,.tsx' },
-    babelOptions: {
-      presets: [
-        ['@babel/preset-env', { useBuiltIns: 'usage', corejs: 3, modules: 'commonjs', targets: { node: true } }],
-        ['@babel/preset-react', {}],
-        ['@babel/preset-typescript', {}],
-      ],
-      plugins: [
-        // ['./lib/dts', { a: 'a', b: 2 }],
-        ['@babel/plugin-proposal-class-properties', {}],
-      ],
-    },
-  })
-  .catch(e => {
-    console.log(e);
-    process.exit(1);
-  });
-
-// 3. umd
-// const compiler = webpack(webpackConfig);
-// compiler.run((err, stats) => {
-//   if (err) {
-//     console.log(err);
-//   }
-// });
+const cjs = new Babel({ ...compilerOptions, dest: 'lib' });
+cjs.hook.options.tap('cjs', opts => {
+  opts
+    .preset('env')
+    .tap(options => ({ ...options, modules: 'cjs' }))
+    .end();
+  opts.comments(false).end();
+});
+cjs.run().catch(err => {
+  console.log(err);
+  process.exit(1);
+});
 
 // 4. dts
 dts.emit({ outDir: 'types', outFile: false, modulePrefix: true }).catch(err => {
   if (err) {
     console.log(err);
   }
+  process.exit(1);
 });

@@ -10,12 +10,14 @@ export interface ComponentData {
     /**
      * @description 组件库名称
      */
-    lib: string;
+    lib?: string;
     /**
      * @description 组件名称
      */
     name: string;
     /**
+     * 项目 webpack 需配置 alisa @components,指定组件所在目录
+     * 组件写法 [@components/]path/name []内为可省略部分
      * @description 组件属性
      */
     props?: Exclude<any, Function>;

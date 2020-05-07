@@ -1,10 +1,8 @@
 import React from 'react';
-import { Button } from 'antd';
-import Grid, { Container, Item } from 'grid-layout-react';
+import Grid from 'grid-layout-react';
+import { GridData } from 'grid-layout-core';
 
-interface IndexProps {}
-
-const demo = {
+const demo: GridData = {
   id: 'demo1',
   name: 'demo1',
   container: {
@@ -27,6 +25,7 @@ const demo = {
       rowStart: 1,
       rowSpan: 4,
       columnSpan: 1,
+      content: '测试1',
     },
     {
       id: '5-1-4-1',
@@ -35,6 +34,7 @@ const demo = {
       columnStart: 1,
       rowSpan: 4,
       columnSpan: 1,
+      component: 'A',
     },
     {
       id: '1-2-5-1',
@@ -43,6 +43,13 @@ const demo = {
       columnStart: 2,
       rowSpan: 5,
       columnSpan: 1,
+      component: {
+        lib: 'antd',
+        name: 'Button',
+        props: {
+          type: 'danger',
+        },
+      },
     },
     {
       id: '6-2-3-1',
@@ -51,6 +58,12 @@ const demo = {
       columnStart: 2,
       rowSpan: 3,
       columnSpan: 1,
+      component: {
+        name: '@components/C',
+        props: {
+          name: 'ABBA',
+        },
+      },
     },
     {
       id: '1-3-4-1',
@@ -59,6 +72,7 @@ const demo = {
       columnStart: 3,
       rowSpan: 4,
       columnSpan: 1,
+      component: '@components/C',
     },
     {
       id: '5-3-4-1',
@@ -71,20 +85,17 @@ const demo = {
   ],
   itemStyle: {
     padding: '5px',
-    border: 'solid #0b5d9c 1px',
+    border: 'dashed #0b5d9c 1px',
     borderRadius: '8px',
   },
+} as GridData;
+
+const GridLayoutGenerator: React.FC = () => {
+  return (
+    <>
+      <Grid data={demo} />
+    </>
+  );
 };
 
-const Index: React.FC<IndexProps> = () => (
-  <div>
-    <Button type="primary">测试</Button>
-    <Grid data={demo}>
-      <Container width="100%" height="100px" border="1px red dashed">
-        <Item />
-      </Container>
-    </Grid>
-  </div>
-);
-
-export default Index;
+export default GridLayoutGenerator;

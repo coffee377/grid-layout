@@ -10,20 +10,28 @@
     "build": "yarn prebuild && node scripts/build.js",
     "prepublish": "yarn build"
   },
-  "files": ["esm", "lib", "types", "index.d.ts", "README.md"],
+  "files": [
+    "esm",
+    "lib",
+    "types",
+    "index.d.ts",
+    "README.md"
+  ],
   "author": {
     "name": "coffee377",
     "email": "coffee377@dingtalk.com"
   },
   "license": "ISC",
   "dependencies": {
+    "@loadable/component": "^5.12.0",
     "classnames": "^2.2.6",
     "grid-layout-core": "^0.0.1",
     "react": "^16.12.0"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.9",
+    "@types/loadable__component": "^5.10.0",
     "@types/react": "^16.9.23",
-    "dts-helper": "^1.1.3"
+    "build-toolkit": "^0.1.0"
   }
 }

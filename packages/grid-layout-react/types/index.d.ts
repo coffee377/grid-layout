@@ -1,4 +1,4 @@
-import Container from "./Container";
-import Item from "./Item";
-export { default as Grid } from "./GridLayout";
-export { Container, Item };
+import Grid from "./GridLayout";
+export { default as Container } from "./Container";
+export { default as Item } from "./Item";
+export default Grid;

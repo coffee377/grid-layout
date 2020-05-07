@@ -15,7 +15,7 @@ module.exports = {
     'no-shadow': 0,
     'no-empty': 0,
     'dot-notation': 0,
-    'global-require': 1,
+    'global-require': 0,
   },
   settings: {
     'import/resolver': {
