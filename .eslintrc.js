@@ -1,4 +1,4 @@
-const { strictEslint } = require('@umijs/fabric');
+const {strictEslint} = require('@umijs/fabric');
 
 module.exports = {
   ...strictEslint,
@@ -8,17 +8,17 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/no-unused-vars': 1,
     'react/no-array-index-key': 1,
-    'import/no-unresolved': [0, { ignore: ['^@/', '^umi/'] }],
+    'import/no-unresolved': [0, {ignore: ['^@/', '^umi/']}],
     'import/no-extraneous-dependencies': 1,
     'no-plusplus': 0,
     'no-console': 0,
+    'no-debugger': 0,
     'no-shadow': 0,
     'no-empty': 0,
     'dot-notation': 0,
     'global-require': 0,
   },
   settings: {
-    'import/resolver': {
-    }
+    'import/resolver': {}
   }
 };

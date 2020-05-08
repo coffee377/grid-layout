@@ -11,6 +11,7 @@ interface DynamicState {
   result?: ComponentType<any>;
   error?: string;
 }
+
 const Dynamic: React.FC<DynamicProps> = (props) => {
   const { component, lib, name, props: componentProps } = props;
   const [state, setState] = useState<DynamicState>({ lib: lib !== undefined });
@@ -26,17 +27,17 @@ const Dynamic: React.FC<DynamicProps> = (props) => {
   useEffect(() => {
     /* 导入组件库 */
     if (lib && name) {
-      import('antd')
-        .then((mod) => {
-          setState({ loading: true, result: mod['default'] ? mod['default'][name] : mod[name] });
-        })
-        .catch((err) => {
-          setState({ error: err.toString() });
-        });
+      // todo 使用变量时 Cannot find module antd
+      // import('@vocjs/lib')
+      //   .then((mod) => {
+      //     setState({ loading: true, result: mod['default'] ? mod['default'][name] : mod[name] });
+      //   })
+      //   .catch((err) => {
+      //     setState({ error: err.toString() });
+      //   });
     }
     /* 导入本地组件 */
     if (!lib && (component || name)) {
-      // eslint-disable-next-line no-lonely-if
       if (getComponentName()) {
         import(`@components/${getComponentName()}`)
           .then((mod) => {
@@ -47,6 +48,7 @@ const Dynamic: React.FC<DynamicProps> = (props) => {
           });
       }
     }
+    return () => {};
   }, []);
 
   if (state.error) {

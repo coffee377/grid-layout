@@ -81,6 +81,7 @@ const demo: GridData = {
       columnStart: 3,
       rowSpan: 4,
       columnSpan: 1,
+      component: 'A',
     },
   ],
   itemStyle: {

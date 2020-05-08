@@ -214,9 +214,11 @@ else {
     .use(CopyPlugin, [[{ from: 'public' }], { ignore: [], copyUnmodified: true }])
     .end();
 }
-
+console.log(require.resolve('antd'));
 // config.resolve.mainFields.add('module').add('main').end();
-config.resolve.alias.set('@components', path.resolve(__dirname, 'src/components')).end();
+config.resolve.alias
+  .set('@components', path.resolve(__dirname, 'src/components'))
+  .end();
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx', '.css', '.less', '.sass', '.json'];
 extensions.forEach((ext) => {
