@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Grid from 'grid-layout-react';
 import { GridData } from 'grid-layout-core';
+import classNames from 'classnames';
+import { style as styles} from './style';
 
 const demo: GridData = {
   id: 'demo1',
@@ -91,7 +93,20 @@ const demo: GridData = {
   },
 } as GridData;
 
-const GridLayoutGenerator: React.FC = () => {
+export interface GridLayoutProps {}
+
+const GridLayoutGenerator: React.FC<GridLayoutProps> = (props) => {
+  const bodyClass = (show: boolean) => {
+    document.body.className = classNames({ [styles.body]: show, [styles.background]: show });
+  };
+
+  useEffect(() => {
+    bodyClass(true);
+    return () => {
+      bodyClass(false);
+    };
+  }, []);
+
   return (
     <>
       <Grid data={demo} />

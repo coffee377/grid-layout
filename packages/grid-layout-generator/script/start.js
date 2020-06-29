@@ -1,8 +1,9 @@
 process.env.NODE_ENV = 'development';
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-const { register, DEFAULT_BABEL_OPTIONS: babelOpts ,BabelOptions} = require('build-toolkit');
+const { register, DEFAULT_BABEL_OPTIONS, BabelOptions } = require('build-toolkit');
 
+const babelOpts = new DEFAULT_BABEL_OPTIONS();
 babelOpts.tap((config) => ({ ...config, isTS: true }));
 register(babelOpts);
 const configuration = require('../webpack.chain.config');

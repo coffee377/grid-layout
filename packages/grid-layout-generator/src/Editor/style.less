@@ -1,0 +1,62 @@
+@import './common';
+
+.edit {
+  &-wrapper {
+    width: 100vw;
+    position: relative;
+    height: 100vh;
+    background: @edit-bg-color;
+    overflow: hidden;
+    > div {
+      height: 100%;
+      float: left;
+    }
+  }
+  &-left-view {
+    width: ~'calc(100% - @{edit-right-view-width})';
+  }
+  &-right-view {
+    width: @edit-right-view-width;
+    border-left: 1px solid @edit-line-color;
+  }
+  &-content-wrapper {
+    height: ~'calc(100% - @{edit-nav-height})';
+    position: relative;
+    //border: 1px red dashed;
+  }
+  &-stage-wrapper {
+    display: inline-block;
+    width: ~'calc(100% - @{edit-side-menu-width})';
+    height: 100%;
+    position: absolute;
+    left: @edit-side-menu-width;
+    top: 0;
+    border: 1px green dashed;
+    .edit-preview {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      //left: 0;
+      //right: 0;
+      ////top: 16px;
+      //bottom: 0;
+      border: none;
+      max-height: 100%;
+      overflow: hidden;
+      display: block;
+      margin: auto;
+      transition: width 0.15s @ease-in-out, max-height 0.15s @ease-in-out, top 0.15s @ease-in-out;
+      &.mobile {
+        box-shadow: 0 0 0 1px #000;
+      }
+
+    }
+    //.mobile {
+    //  width: 375px;
+    //  max-height: 667px;
+    //}
+  }
+}
+p {
+  margin: 0;
+}

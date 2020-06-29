@@ -15,7 +15,12 @@ export interface GridLayoutProps extends Partial<GridData> {
   data?: GridData;
 }
 
-const GridLayout: React.FC<GridLayoutProps> = (props) => {
+interface GridLayoutType extends React.FC<GridLayoutProps> {
+  Container?: typeof Container;
+  Item?: typeof Item;
+}
+
+const GridLayout: GridLayoutType = (props) => {
   const { data, children } = props;
 
   /* 1.组件属性 */
@@ -52,5 +57,7 @@ const GridLayout: React.FC<GridLayoutProps> = (props) => {
 GridLayout.defaultProps = {};
 
 GridLayout.displayName = 'CssGridLayout';
+GridLayout.Container = Container;
+GridLayout.Item = Item;
 
 export default GridLayout;

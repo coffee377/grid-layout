@@ -1,6 +1,5 @@
-import Grid from './GridLayout';
+import GridLayout from './GridLayout';
 
-export { default as Container } from './Container';
-export { default as Item } from './Item';
+const { Container, Item } = GridLayout;
 
-export default Grid;
+export default GridLayout;

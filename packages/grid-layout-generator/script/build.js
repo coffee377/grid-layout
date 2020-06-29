@@ -1,8 +1,9 @@
 process.env.NODE_ENV = 'production';
 const webpack = require('webpack');
-const { register, DEFAULT_BABEL_OPTIONS: babelOpts } = require('build-toolkit');
+const { register, DEFAULT_BABEL_OPTIONS } = require('build-toolkit');
 
 // babel 钩子注册
+const babelOpts = new DEFAULT_BABEL_OPTIONS();
 babelOpts.tap((config) => ({ ...config, isTS: true }));
 register(babelOpts);
 

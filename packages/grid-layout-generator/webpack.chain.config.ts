@@ -6,7 +6,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from 'webpack';
 import CopyPlugin from 'copy-webpack-plugin';
 import CssExtractPlugin from 'mini-css-extract-plugin';
-import { DEFAULT_BABEL_OPTIONS as babelOptions } from 'build-toolkit';
+import { DEFAULT_BABEL_OPTIONS } from 'build-toolkit';
 import { IBabelConfig } from 'build-toolkit/types/babel/BabelOptions';
 
 const config = new Config();
@@ -49,6 +49,8 @@ if (devMode) {
         changeOrigin: true,
       },
     ])
+    .inline(true)
+    .historyApiFallback(true)
     .end();
 }
 
@@ -64,7 +66,15 @@ if (devMode) {
 // });
 
 // babel 配置
-babelOptions.tap<IBabelConfig>((c) => ({ ...c, isTS: true, isReact: true, isAntd: true, modules: false }));
+const babelOptions = new DEFAULT_BABEL_OPTIONS();
+babelOptions.tap<IBabelConfig>((c) => ({
+  ...c,
+  isTS: true,
+  isReact: true,
+  isAntd: true,
+  modules: false,
+  runtimeHelper: true,
+}));
 const babelOpts = babelOptions.toConfig();
 console.log(babelOptions.toString());
 
@@ -216,9 +226,7 @@ else {
 }
 console.log(require.resolve('antd'));
 // config.resolve.mainFields.add('module').add('main').end();
-config.resolve.alias
-  .set('@components', path.resolve(__dirname, 'src/components'))
-  .end();
+config.resolve.alias.set('@', path.resolve(__dirname, 'src')).end();
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx', '.css', '.less', '.sass', '.json'];
 extensions.forEach((ext) => {
@@ -230,5 +238,29 @@ config.externals({
   // antd: 'antd',
   // 'react-dom': 'react-dom',
 });
+
+// config.optimization
+//   .splitChunks({
+//     chunks: 'async',
+//     // minSize: 30000,
+//     // minRemainingSize: 0,
+//     // maxSize: 0,
+//     minChunks: 1,
+//     maxAsyncRequests: 1,
+//     // maxInitialRequests: 4,
+//     // automaticNameDelimiter: '-',
+//     // cacheGroups: {
+//     //   defaultVendors: {
+//     //     test: /[\\/]node_modules[\\/]/,
+//     //     priority: -10,
+//     //   },
+//     //   default: {
+//     //     minChunks: 2,
+//     //     priority: -20,
+//     //     reuseExistingChunk: true,
+//     //   },
+//     // },
+//   })
+//   .end();
 
 module.exports = config.toConfig();

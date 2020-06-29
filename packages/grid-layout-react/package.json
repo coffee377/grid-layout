@@ -33,5 +33,8 @@
     "@types/loadable__component": "^5.10.0",
     "@types/react": "^16.9.23",
     "build-toolkit": "^0.1.0"
+  },
+  "peerDependencies": {
+
   }
 }
