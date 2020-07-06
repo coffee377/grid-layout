@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Link, useRoutes, Routes, useNavigate, useLocation, Outlet, Route } from 'react-router-dom';
+import { BrowserRouter, Outlet, useRoutes } from 'react-router-dom';
 import { PartialRouteObject } from 'react-router';
 import BaseLayout from '@/layouts/BaseLayout';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import loadable from '@loadable/component';
-import list2tree from 'list2tree';
-import GridLayoutGenerator from './components/GridLayoutGenerator';
+import { list2tree } from '@/utils/tree';
+import BaseLayout2 from '@/layouts/BaseLayout2';
 import Editor from './Editor';
 import store from './redux';
 import Home from './pages/Home';
@@ -15,9 +15,9 @@ import About from './pages/About';
 import Invoices from './pages/dashboard/Invoices';
 import Team from './pages/dashboard/Team';
 import NotFound from './pages/NotFound';
-import AsyncComponent from './Async';
+import Dynamic from './Dynamic';
 
-interface IMenu {
+export interface IMenu {
   /**
    * @description 菜单ID
    */
@@ -55,7 +55,20 @@ interface IMenu {
    * @default 0
    */
   sort?: number;
-
+  /**
+   * @description 菜单完整路径数组
+   */
+  paths?: string[];
+  /**
+   * @description 页面权限
+   */
+  authority?: {
+    ADD: boolean;
+    DELETE: boolean;
+    UPDATE: boolean;
+    QUERY: boolean;
+    [action: string]: boolean;
+  };
   /**
    * @description 其他配置项
    */
@@ -86,22 +99,96 @@ export interface AppRoutesProps {
   rootLayout?: React.ReactNode;
 }
 
+interface ElementOptions<P = {}> {
+  /**
+   * @description 是否布局组件
+   * @default false
+   */
+  layout?: boolean;
+  /**
+   * @description 组件属性
+   */
+  props?: P;
+}
+
+type ElementFn = (component: string | React.Component | React.FC, opts?: ElementOptions) => React.ReactNode;
+
+interface LayoutProps {
+  layout?: React.Component | React.FunctionComponent;
+}
+/**
+ * 路由布局包装器
+ * @param props
+ * @constructor
+ */
+const Layout: React.FC<LayoutProps> = (props) => {
+  const { layout: LayoutWrapper } = props;
+  if (LayoutWrapper) {
+    return (
+      <LayoutWrapper>
+        <Outlet />
+      </LayoutWrapper>
+    );
+  }
+  return <Outlet />;
+};
+
+/**
+ * 创建路由元素
+ * @param component
+ * @param opts
+ */
+const createElement: ElementFn = (component, opts = { layout: false }) => {
+  const { layout } = opts;
+  const isReactElement = component['$$typeof']
+    ? Symbol.keyFor(component['$$typeof'] as Symbol) === 'react.element'
+    : false;
+  if (component) {
+    if (typeof component === 'string') {
+      if (layout) {
+        return (
+          <Dynamic layout={component}>
+            <Outlet />
+          </Dynamic>
+        );
+      }
+      return <Dynamic page="Home" name="Test Home Q" />;
+    }
+    debugger;
+    if (layout) {
+      // const C: React.ReactElement = component as React.ReactElement;
+
+      // const t = component['$$typeof'] as Symbol;
+      // console.log('console.log(typeof symbol1);', t.toString());
+      // const e = isReactElement === t;
+      debugger;
+      // const a =
+      const T = component['type'];
+      debugger;
+      return (
+        <T>
+          <Outlet />
+        </T>
+      );
+      // return <LayoutWrapper Layout={false}>{component}</LayoutWrapper>;
+    }
+    return component;
+  }
+  return null;
+};
+
 const partialRoutes: PartialRouteObject[] = [
   {
     path: '/',
-    element: (
-      <BaseLayout>
-        <Outlet />
-      </BaseLayout>
-    ),
+    element: createElement(<BaseLayout2 />, { layout: true }),
     children: [
       {
         path: '/',
-        element: <Home />,
+        element: createElement(<Home />),
       },
       {
         path: 'home',
-        element: <AsyncComponent page="Home" name="test" />,
+        element: createElement('Home'),
       },
       {
         path: 'about',
@@ -143,15 +230,16 @@ const menus: IMenu[] = [
       </BaseLayout>
     ),
   },
-  { id: '8', pid: '1', name: '首页', path: '/', component: <Home /> },
-  { id: '2', pid: '1', name: '主页', path: 'home', component: <AsyncHome name="Test" /> },
-  { id: '3', pid: '1', name: '关于', path: 'about', component: <About /> },
-  { id: '4', pid: '1', name: '编辑器', path: 'editor', component: <Editor /> },
+  { id: '8', pid: '1', name: '首页', path: '/', sort: 1, component: <Home /> },
+  { id: '2', pid: '1', name: '主页', path: 'home', sort: 2, component: <AsyncHome name="Test" /> },
+  { id: '3', pid: '1', name: '关于', path: 'about', sort: 8, component: <About /> },
+  { id: '4', pid: '1', name: '编辑器', path: 'editor', sort: 3, component: <Editor /> },
   {
     id: '5',
     pid: '1',
     name: '仪表板',
     path: 'dashboard',
+    sort: 4,
     component: (
       <DashboardLayout>
         <Outlet />
@@ -161,6 +249,10 @@ const menus: IMenu[] = [
   { id: '6', pid: '5', name: '收入', path: 'invoices', component: <Invoices /> },
   { id: '7', pid: '5', name: '团队', path: 'team', component: <Team /> },
 ];
+interface AppContextValue {
+  menus?: IMenu[];
+}
+export const AppContext = React.createContext<AppContextValue>({});
 
 const AppRoutes: React.FC<AppRoutesProps> = (props) => {
   const { basename, menus, routes, rootLayout } = props;
@@ -173,18 +265,26 @@ const AppRoutes: React.FC<AppRoutesProps> = (props) => {
     partialRoutes = routes;
   }
   /* 3. 由 API 生成路由信息 */
-  return useRoutes(partialRoutes, basename);
+  const r: React.ReactElement = useRoutes(partialRoutes, basename);
+  return r;
 };
 
 const calcRoutes = (menus: IMenu[], rootLayout?: React.ReactNode) => {
-  const partialRoutes: PartialRouteObject[] = [];
-  const getTreeData = list2tree({
-    idKey: 'id',
-    parentIdKey: 'pid',
+  const partialRoutes: PartialRouteObject[] = menus.map((menu) => {
+    return { id: menu.id, pid: menu.pid, path: menu.path, element: 'menu.component' };
   });
-  const data = getTreeData(menus);
+  const idKey: string = 'id';
+  const pidKey: string = 'pid';
+  const sortKey: string = 'sort';
+  const isDesc: boolean = false;
   debugger;
-  return partialRoutes;
+  // const partialRoutes: PartialRouteObject[] = [];
+  const treeData = list2tree(menus, { idKey, pidKey, sortKey, isDesc });
+  // 继续转换
+  // treeData.forEach((item) => {
+  //   partialRoutes.push({ path: '', element: '', children: [] });
+  // });
+  return treeData;
 };
 
 AppRoutes.defaultProps = {
@@ -196,9 +296,12 @@ const App = () => {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <AppRoutes basename="" menus={menus} rootLayout={BaseLayout} />
+        <AppContext.Provider value={{ menus }}>
+          <AppRoutes basename="" menus={menus} routes={partialRoutes} rootLayout={BaseLayout} />
+        </AppContext.Provider>
       </BrowserRouter>
     </Provider>
+    // <Rxjs />
   );
 };
 
